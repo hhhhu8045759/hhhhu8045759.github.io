@@ -173,7 +173,7 @@
               <span class="post-meta-item-text">نُشر في</span>
               
 
-              <time title="أُنشأ: 2021-09-28 15:36:05 / عُدل: 16:41:11" itemprop="dateCreated datePublished" datetime="2021-09-28T15:36:05+08:00">2021-09-28</time>
+              <time title="أُنشأ: 2021-09-28 15:36:05 / عُدل: 16:45:40" itemprop="dateCreated datePublished" datetime="2021-09-28T15:36:05+08:00">2021-09-28</time>
             </span>
 
           
@@ -187,7 +187,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>title: Linux sudo漏洞（CVE-2017-1000367）复现和利用思路分析<br>date: 2021-09-28 15:36:05<br>tags:17年做漏洞分析的文章，整理一下到博客上</p>
+          <p>title: Linux sudo漏洞（CVE-2017-1000367）复现和利用思路分析</p>
+<p>date: 2021-09-28 15:36:05</p>
+<p>tags:17年做漏洞分析的文章，整理一下到博客上</p>
 <h2 id="漏洞背景"><a href="#漏洞背景" class="headerlink" title="漏洞背景"></a><strong>漏洞背景</strong></h2><p>在今年5.30日linux sudo被爆出存在安全漏洞，sudo版本是1.8.20以及之前的版本都有可能会受到漏洞的影响，在开启selinux的情况和普通用户在sudoer者中，可以使普通用户造成覆盖任意文件，造成权限的提升。<br><br></p>
 <h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>出现漏洞主要在sudo中的/src/ttyname.c中的</p>
 <p>char *get_proccess_ttyname()函数中，这个函数功能获取终端名称，会有多种方式获取终端名称，而此次漏洞是出现在根据读取/proc/pid/stat的方式先获取设备号，然后根据设备号获取设备名的函数中，如图所示：</p>
