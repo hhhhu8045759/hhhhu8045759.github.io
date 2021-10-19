@@ -148,6 +148,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/19/winafl-fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Her0back">
+      <meta itemprop="description" content="记录学习日志，和随便写写">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Her0back blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/19/winafl-fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">winafl fuzz的一些个人总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+
+              <time title="Erstellt: 2021-10-19 11:39:54 / Geändert am: 11:43:22" itemprop="dateCreated datePublished" datetime="2021-10-19T11:39:54+08:00">2021-10-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\drrun.exe -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x0100 -fuzz_itera tions 10 -nargs 2 – test_gdiplus.exe ./1.bmp</p>
+<p>一些命令行的总结</p>
+<p>64位的程序</p>
+<p>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64\drrun.exe -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x10e0 -fuzz_iterations 10 -nargs 2 – test_gdiplus.exe ./1.bmp</p>
+<p>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 – -coverage_module gdiplus.dll -coverage_module WindowsCodecs.dll -fuzz_iterations 5000 -target_module test_gdiplus.exe -target_offset 0x10e0 -nargs 2 – test_gdiplus.exe @@</p>
+<p>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\drrun.exe -t drcov – hh.exe -decompile ./in/admin.chm </p>
+<p>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 – -coverage_module hhctrl.ocx  -fuzz_iterations 5000 -target_module vs_test_x64.exe -target_offset 0x11830 -nargs 2 – vs_test_x64.exe @@</p>
+<p>遇到问题：</p>
+<p>1、vs_test_x64每次启动的话,多次请求的fuzz一个函数，没有关闭句柄，想着调试，或者看一下是哪些程序占用了这个文件。</p>
+<p>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64\drrun.exe -c winafl.dll -debug -target_module  hh.exe -target_offset 0x150c -fuzz_iterations 10 -nargs 4 – hh.exe -decompile in H:\winafl_work\winafl\winafl-master\build64\bin\Release\in\22.chm</p>
+<p>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 – -coverage_module hhctrl.ocx  -fuzz_iterations 5000 -target_module hh.exe -target_offset 0x150c -nargs 4 – hh.exe -decompile in @@</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/28/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -475,9 +544,13 @@ qq:2606627006
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">Artikel</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">schlagwörter</span>
       </div>
   </nav>
 </div>
