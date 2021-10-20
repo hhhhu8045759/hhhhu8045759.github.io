@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/.com//blog/blog/source_posts/mfc程序回顾一些东西/mfc_main.png">
 <meta property="article:published_time" content="2021-10-19T08:54:11.000Z">
-<meta property="article:modified_time" content="2021-10-20T03:55:30.342Z">
+<meta property="article:modified_time" content="2021-10-20T06:34:24.657Z">
 <meta property="article:author" content="Her0back">
 <meta property="article:tag" content="vs上mfc的程序回顾一些东西">
 <meta name="twitter:card" content="summary">
@@ -184,7 +184,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-20 11:55:30" itemprop="dateModified" datetime="2021-10-20T11:55:30+08:00">2021-10-20</time>
+                <time title="修改时间：2021-10-20 14:34:24" itemprop="dateModified" datetime="2021-10-20T14:34:24+08:00">2021-10-20</time>
               </span>
 
           
@@ -205,7 +205,7 @@
 <p><img src="/.com//blog\blog\source_posts\mfc程序回顾一些东西\mfc_main.png" alt="mfc_main"></p>
 <p>例如当用户点击这个窗口的退出时，应该返回到回调的消息中，回调消息中进行捕捉到消息，<u><strong>进行判断是退出的消息，进行销毁窗口，或者是当点击其他窗口例如关于，这时候做一个函数的动作，自己画一个窗口或者是其他的动作等，不一定是窗口的动作，也可以是win32的一些动作。</strong></u></p>
 <p><del>现在记忆有点混乱了，记得当初写图形应用程序时，有一个直接拖控件的直接点击就可以生成关联代码，然后可以直接用，**<u>MFC好像自己手动的去进行关联这块</u>**，好像是C#这个语言是自动的，这块之后在分析</del></p>
-<p>昨天在vs2019上的编辑器上，因为MFC的组件没有安装全，所以只能是启动图形化的项目，新装了软件库所有的之后，会有MFC的单独的项目出来，**<u>MFC还分为单文档，多文档和基于对话框模式的3种样式，不同的样式可能也会不同，主要的一点是区分好这三种的入口点函数是什么都是一样的么，去分析</u>**</p>
+<p>昨天在vs2019上的编辑器上，因为MFC的组件没有安装全，所以只能是启动图形化的项目，新装了软件库所有的之后，会有MFC的单独的项目出来，<u><strong>MFC还分为单文档，多文档和基于对话框模式的3种样式，不同的样式可能也会不同，主要的一点是区分好这三种的入口点函数是什么都是一样的么，去分析</strong></u></p>
 <p>大概的MFC 程序 处理文件的思路也就是先这样，函数在最开始进行初始化各种组件控件，画图的各种初始化操作，然后在图形界面中存在按钮中读取文件的地址的信息，然后进行文件处理的操作，最后呢处理出来的结果和数据呢显示在界面上，重要想起来了，之前写的MFC的应用程序就是这种，一个单独的程序去处理文件和逻辑这块需要去分析，然后得出FUzz的函数和具体的偏移地址。</p>
 <p><u><strong>如果程序支持命令行方式启动的话，这块需要在仔细思考一下具体是怎么做的，MFC支持命令行的这块的操作。</strong></u></p>
 <p>MFC的主函数中有一个消息循环的机制，各种消息的捕获处理和分发，在主程序中进行调用。</p>
