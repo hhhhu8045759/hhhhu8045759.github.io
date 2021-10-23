@@ -255,7 +255,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-21 20:57:48" itemprop="dateModified" datetime="2021-10-21T20:57:48+08:00">2021-10-21</time>
+                <time title="修改时间：2021-10-23 15:38:39" itemprop="dateModified" datetime="2021-10-23T15:38:39+08:00">2021-10-23</time>
               </span>
 
           
@@ -278,6 +278,7 @@
 <p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\drrun.exe -t drcov -- hh.exe -decompile  ./in/admin.chm</code> </p>
 <p>类似这种，会执行函数然后呢，会被这个函数调用的过程进行一个程序的插桩记录，所以可以得出这个过程。</p>
 <p>但是呢看不到一个调用的堆栈，看一下。</p>
+<p>还有一种呢就是通过x64dbg，先是断点到处理到那个dll的那个位置，然后好像动态的去找到一个调用顺序链，这个应该是可以，之后再看。</p>
 <p><strong>winafl选择函数的要满足这三点要求</strong></p>
 <p>1、winafl为了保证效率和速度呢，会保存当前函数的堆栈信息，当这个函数结束的时候呢，在恢复出而不结束程序，所以呢，需要选择合。</p>
 <p>2、这个函数的选择呢，需要支持会在当前的函数中进行文件的处理文件解析的操作。</p>
