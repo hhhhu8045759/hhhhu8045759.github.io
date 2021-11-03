@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-02 20:20:41" itemprop="dateModified" datetime="2021-11-02T20:20:41+08:00">2021-11-02</time>
+                <time title="修改时间：2021-11-03 17:16:27" itemprop="dateModified" datetime="2021-11-03T17:16:27+08:00">2021-11-03</time>
               </span>
 
           
@@ -266,8 +266,8 @@
 <p>get_narrow_winmain_command_line(),函数返回值存在rax寄存器中，获取当前命令行参数的参数，根据调试得出是正确的，可以通过在ida上设置一样的base基地址去，去同步x64dbg的地址。可以通过readfile下断点然后去查看调用堆栈，分析调用过程，分析代码，于是思考简单通用的方法是否可行，用autoit自动化脚本。</p>
 <p>使用autoit这个脚本，可以做到对指定的程序的窗口进行获取，并关闭，现在看一条思路。</p>
 <p>这个程序会打开可读的文件、然后使用一个窗口显示出来，**<u>需要做的就是2件事情</u>**</p>
-<p>1、分析出显示出图像文本这个函数逻辑是从哪进行开始的，MFC这一块。</p>
-<p>2、就是分析显示图像的窗口，能否想办法让它自己结束或者用autoit这个脚本自动来实现。</p>
+<p>1、分析出显示出图像文本这个函数逻辑是从哪进行开始的，MFC这一块,可以从界面上先打开软件，然后在里面打开文件选项中选取文件，使用processmonitor程序进行监控，查看调用堆栈的过程。</p>
+<p>2、就是分析显示图像的窗口，能否想办法让它自己结束或者用autoit这个脚本自动来实现，通过查看句柄的工具可以找到分析显示出pdf的窗口，这个窗口就是来显示pdf文件的。</p>
 
       
     </div>
@@ -318,7 +318,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-02 11:03:05" itemprop="dateModified" datetime="2021-11-02T11:03:05+08:00">2021-11-02</time>
+                <time title="修改时间：2021-11-03 13:50:03" itemprop="dateModified" datetime="2021-11-03T13:50:03+08:00">2021-11-03</time>
               </span>
 
           
