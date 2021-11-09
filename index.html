@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-03 17:21:03" itemprop="dateModified" datetime="2021-11-03T17:21:03+08:00">2021-11-03</time>
+                <time title="修改时间：2021-11-04 15:15:49" itemprop="dateModified" datetime="2021-11-04T15:15:49+08:00">2021-11-04</time>
               </span>
 
           
@@ -263,9 +263,11 @@
 <p>这是一个MFC的GUI应用程序，从现在的分析看来，从程序上入手呢，是支持命令行输入的，所以通过之前对MFC的程序的了解，分析了单文本边框的MFC程序，从ida逆向分析，去找接受命令行cmdline的地方代码和位置，通过分析比对两个比较相似的地方，然后用x64dbg去调试了一下，在静态函数的位置上进行断点，发现在这个位置上却没有断下来，可能就是接收命令行参数的地方不是这块函数，目前没有找到比较像的函数或者位置。</p>
 <p>熟悉一下x64汇编的调用约定</p>
 <p>x86应用程序的函数调用有stdcall、_cdecl、Fastcall等方式，但x64应用程序只有1种寄存器快速调用约定。前4个参数使用寄存器传递，如果参数超过4个，多余的参数就放在栈里，人栈顺序为从右到左，由函数调用方平衡栈空间。前4个参数存放的寄存器是固定的，分别是第1个参数RCX、第2个参数RDX、第3个参数R8、第4个参数R9，其他参数从右往左依次人栈。任何大于8字节或者不是1字节、2字节、4字节、8字节的参数必须由引用来传递（地址传递)。所有浮点参数的传递都是使用XMM 寄存器完成的，它们在XMMO、XMM1、XMM2和XMM3 中传递，返回值保存在rax寄存器中。</p>
+<p><strong>c++代码逆向一些细节</strong></p>
+<p>代码段寄存器CS：存放当前正在运行的程序代码所在段的段基值，表示当前用的指令代码可以从该段寄存器指定的存储器段中取得，相应的偏移值则由IP提供。<br>数据段寄存器DS：指出当前程序用的数据所存放段的最低地址，即存放数据段的段基值。<br>堆栈段寄存器SS：指出当前堆栈的底部地址，即存放堆栈段的段基值。</p>
 <p>get_narrow_winmain_command_line(),函数返回值存在rax寄存器中，获取当前命令行参数的参数，根据调试得出是正确的，可以通过在ida上设置一样的base基地址去，去同步x64dbg的地址。可以通过readfile下断点然后去查看调用堆栈，分析调用过程，分析代码，于是思考简单通用的方法是否可行，用autoit自动化脚本。</p>
 <p>使用autoit这个脚本，可以做到对指定的程序的窗口进行获取，并关闭，现在看一条思路。</p>
-<p>这个程序会打开可读的文件、然后使用一个窗口显示出来，**<u>需要做的就是2件事情</u>**</p>
+<p>这个程序会打开可读的文件、然后使用一个窗口显示出来，<strong>需要做的就是2件事情</strong></p>
 <p>1、分析出显示出图像文本这个函数逻辑是从哪进行开始的，MFC这一块,可以从界面上先打开软件，然后在里面打开文件选项中选取文件，使用processmonitor程序进行监控，查看调用堆栈的过程。</p>
 <p>2、就是分析显示图像的窗口，能否想办法让它自己结束或者用autoit这个脚本自动来实现，通过查看句柄的工具可以找到分析显示出pdf的窗口，这个窗口就是来显示pdf文件的。</p>
 
@@ -318,7 +320,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-03 13:50:03" itemprop="dateModified" datetime="2021-11-03T13:50:03+08:00">2021-11-03</time>
+                <time title="修改时间：2021-11-04 12:00:34" itemprop="dateModified" datetime="2021-11-04T12:00:34+08:00">2021-11-04</time>
               </span>
 
           
@@ -387,7 +389,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-21 17:47:55" itemprop="dateModified" datetime="2021-10-21T17:47:55+08:00">2021-10-21</time>
+                <time title="修改时间：2021-11-09 10:53:01" itemprop="dateModified" datetime="2021-11-09T10:53:01+08:00">2021-11-09</time>
               </span>
 
           
@@ -413,6 +415,46 @@
 <p><u><strong>如果程序支持命令行方式启动的话，这块需要在仔细思考一下具体是怎么做的，MFC支持命令行的这块的操作。</strong></u></p>
 <p>MFC的主函数中有一个消息循环的机制，各种消息的捕获处理和分发，在主程序中进行调用。</p>
 <p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc_loop_message.png"></p>
+<p><strong>mfc 基础一些字典知识：</strong></p>
+<p>程序入口 winMain</p>
+<p>2    具体6个步骤</p>
+<p>2.1     1、设计窗口 WNDCLASS wc </p>
+<p>2.2     2、注册窗口 RegisterClass</p>
+<p>2.3     3、创建窗口 createWindow</p>
+<p>2.4     4、显示和更新 showWindow updateWindow</p>
+<p>2.5     5、通过循环取消息 MSG msg </p>
+<p>2.5.1   写循环 while（1）</p>
+<p>2.5.2   GetMessage == false 退出循环</p>
+<p>2.5.3   翻译消息</p>
+<p>2.5.4   分发消息</p>
+<p>2.6     6、窗口过程</p>
+<p>2.6.1   <em>LRESULT</em> <em>CALLBACK</em> WindowProc</p>
+<p>2.6.2   返回默认处理</p>
+<p>2.6.3   return <em>DefWindowProc</em>(hwnd, uMsg, wParam, lParam);</p>
+<p>2.6.4   点击叉子 WM_CLOSE destroy</p>
+<p>2.6.5   WM_DESTROY postQuitMessage（0）</p>
+<p>2.6.6   鼠标左键按下</p>
+<p>2.6.7   键盘按下</p>
+<p>2.6.8   绘图 文字</p>
+<p>3      利用mfc创建窗口</p>
+<p>3.1     mfc头文件 afxwin.h</p>
+<p>3.2     自定义类 继承与 CWinApp 应用程序类 MyApp app 应用程序对象 ，有且仅有一个</p>
+<p>3.3     程序如果 InitInstance</p>
+<p>3.4     入口里 创建窗口</p>
+<p>3.5     窗口类 MyFrame 继承与 CFrameWnd </p>
+<p>3.6     MyFrame 构造中 Create（NULL，标题名称）</p>
+<p>3.7     创建窗口对象 </p>
+<p>3.8     显示和更新</p>
+<p>3.9     m_pMainWnd = frame; //保存指向应用程序的主窗口的指针</p>
+<p>3.10    return TRUE</p>
+<p>3.11    对项目进行配置 在共享DLL中使用MFC</p>
+<p>4      消息映射机制</p>
+<p>4.1     声明宏 写到.h中</p>
+<p>4.2     分界宏 写到.cpp中</p>
+<p>4.3     找消息宏 写到 分界宏 中间</p>
+<p>4.4     把函数原型 声明写到.h中</p>
+<p>4.5     函数的实现写到.cpp中</p>
+<p>4.6     鼠标、键盘、绘图</p>
 
       
     </div>
