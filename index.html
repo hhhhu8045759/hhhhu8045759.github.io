@@ -389,7 +389,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-09 10:53:01" itemprop="dateModified" datetime="2021-11-09T10:53:01+08:00">2021-11-09</time>
+                <time title="修改时间：2021-11-10 13:54:23" itemprop="dateModified" datetime="2021-11-10T13:54:23+08:00">2021-11-10</time>
               </span>
 
           
@@ -455,6 +455,16 @@
 <p>4.4     把函数原型 声明写到.h中</p>
 <p>4.5     函数的实现写到.cpp中</p>
 <p>4.6     鼠标、键盘、绘图</p>
+<p><strong>MFC的演变进化过程分为3种</strong></p>
+<p>1、<strong>从win32程序的底层</strong>（全部自己写、消息循环、注册回调处理消息）-&gt; <strong>mfc应用</strong>(利用mfc框架，隐去消息循环等底层处理，而是已c++类的方式提供框架 cwinapp、主的程序  cframe 主的框架、入口点wmain函数 -&gt; inintstance 函数) -&gt; <strong>mfc 向导</strong>(又隐去一些细节、框架变得更多等)</p>
+<p>2、在dialog mfc编程中，每个视图dialog资源对应绑定一个类，每个控件绑定一个类对象里的成员。</p>
+<p><strong>MFC图形gui fuzz</strong></p>
+<p>1、自己去写一个MFC读取文件并显示在控件上的GUI程序去逆向和fuzz一下。</p>
+<p>mfc gui的应用程序逻辑</p>
+<p>1、在初始化窗口函数OnInitDialog()</p>
+<p><code>this-&gt;parse_file()</code></p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/mfc_parse_file.png"></p>
+<p>进行处理，并把文本显示在控件上。</p>
 
       
     </div>
