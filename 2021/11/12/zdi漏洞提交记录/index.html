@@ -20,18 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞 厂商背景简介 全球领先的企业网络解决方案，及数字家庭网络应用倡导者美国网件公司-NETGEAR Inc. （Nasdaq 股票代码：NTGR）成立于1996年1月，一直致力于网络技术创新，专注于产">
+  <meta name="description" content="北京墨云科技协助美国网件(Netgear) 修复数百万路由器高危RCE漏洞 美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞 厂商背景简介 全球领先的企业网络解决方案，及数字家庭网络应用倡导者美国网件公司-NETGEAR Inc. （Nasdaq">
 <meta property="og:type" content="article">
 <meta property="og:title" content="zdi漏洞提交记录">
 <meta property="og:url" content="http://example.com/2021/11/12/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Her0back blog">
-<meta property="og:description" content="美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞 厂商背景简介 全球领先的企业网络解决方案，及数字家庭网络应用倡导者美国网件公司-NETGEAR Inc. （Nasdaq 股票代码：NTGR）成立于1996年1月，一直致力于网络技术创新，专注于产">
+<meta property="og:description" content="北京墨云科技协助美国网件(Netgear) 修复数百万路由器高危RCE漏洞 美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞 厂商背景简介 全球领先的企业网络解决方案，及数字家庭网络应用倡导者美国网件公司-NETGEAR Inc. （Nasdaq">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/5.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/7.png">
 <meta property="article:published_time" content="2021-11-12T08:02:36.000Z">
-<meta property="article:modified_time" content="2021-11-12T09:58:45.532Z">
+<meta property="article:modified_time" content="2021-11-12T11:02:53.173Z">
 <meta property="article:author" content="Her0back">
 <meta property="article:tag" content="netgear多款路由器0day漏洞">
 <meta name="twitter:card" content="summary">
@@ -180,7 +182,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-11-12 16:02:36 / 修改时间：17:58:45" itemprop="dateCreated datePublished" datetime="2021-11-12T16:02:36+08:00">2021-11-12</time>
+              <time title="创建时间：2021-11-12 16:02:36 / 修改时间：19:02:53" itemprop="dateCreated datePublished" datetime="2021-11-12T16:02:36+08:00">2021-11-12</time>
             </span>
 
           
@@ -194,7 +196,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞</strong></p>
+        <p><strong>北京墨云科技协助美国网件(Netgear) 修复数百万路由器高危RCE漏洞</strong></p>
+<p><strong>美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞</strong></p>
 <p><strong>厂商背景简介</strong></p>
 <p>全球领先的企业网络解决方案，及数字家庭网络应用倡导者<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BE%8E%E5%9B%BD%E7%BD%91%E4%BB%B6%E5%85%AC%E5%8F%B8/844142">美国网件公司</a>-NETGEAR Inc. （Nasdaq 股票代码：NTGR）成立于1996年1月，一直致力于网络技术创新，专注于产品的可靠性和易用性提升，为全球商用企业用户和家庭个人用户提供使用简便的高质量网络解决方案。美国网件总部设在美国加州<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9C%A3%E4%BD%95%E5%A1%9E/5634896">圣何塞</a>（San Jose，CA），已经在全球 25 个国家设立分支机构，产品通过 37000 家经销商在全球28000 个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%9B%B6%E5%94%AE%E7%BB%88%E7%AB%AF">零售终端</a>进行销售。对于个人消费者，美国网件提供了高性能，高可靠性与易用的家庭网络，家庭存储、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E5%AD%97%E5%AA%92%E4%BD%93">数字媒体</a>以及其他产品使消费者能够轻松接入到互联网。对于企业用户而言，美国网件为他们的 IT 基础架构提供强大的数据存储、安全、交换、无线解决方案，且无需花费巨大成本。同时，美国网件也在为全球顶级<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%90%E8%90%A5%E5%95%86">运营商</a>提供网络产品，帮助运营商为他们的用户构建数字家庭。</p>
 <p><strong>同时也是世界著名黑客破解大赛 zdi pwn2own AUSTIN  IOT 2021年的破解路由器型号厂商之一，此次纰漏漏洞也影响pwn2own 2021破解大赛netgear路由器型号。</strong></p>
@@ -206,8 +209,13 @@
 <p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/5.png"></p>
 <p><strong>美国网件发布并更新安全公告及影响版本多个型号路由设备</strong>(<a target="_blank" rel="noopener" href="https://kb.netgear.com/000064361/Security-Advisory-for-Pre-Authentication-Buffer-Overflow-on-Multiple-Products-PSV-2021-0168)%EF%BC%9A">https://kb.netgear.com/000064361/Security-Advisory-for-Pre-Authentication-Buffer-Overflow-on-Multiple-Products-PSV-2021-0168)：</a></p>
 <p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/4.png"></p>
+<p><strong>受影响路由器型号45种，netgear目前旗下网络设备种类81种，占比56%左右，据统计全网在线的路由器数量。zoomeye调查显示为，在线为990万。</strong></p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/6.png"></p>
+<p>shadon测绘搜索结果为在线设备为193万。</p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/7.png"></p>
+<p><strong>漏洞影响范围应在百万数量级左右，可能会更多，有些没有被搜索到。</strong></p>
 <p><strong>漏洞细节：</strong></p>
-<p>路由器内部upnp服务存在漏洞，当恶意的攻击者构造特定的网络协议，即可触发漏洞、达到执行代码，获取root shell权限。</p>
+<p>路由器内部upnp服务存在问题漏洞，默认监听特定的端口进行处理，当攻击者构造精心制作的数据时即可触发漏洞，达到执行代码，获取root shell权限。</p>
 <p><strong>修复建议：</strong></p>
 <p>查看官方的受影响的型号范围，受影响的设备更新到官方最新固件。</p>
 

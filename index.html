@@ -173,7 +173,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-11-12 16:02:36 / 修改时间：17:58:45" itemprop="dateCreated datePublished" datetime="2021-11-12T16:02:36+08:00">2021-11-12</time>
+              <time title="创建时间：2021-11-12 16:02:36 / 修改时间：19:02:53" itemprop="dateCreated datePublished" datetime="2021-11-12T16:02:36+08:00">2021-11-12</time>
             </span>
 
           
@@ -187,7 +187,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞</strong></p>
+          <p><strong>北京墨云科技协助美国网件(Netgear) 修复数百万路由器高危RCE漏洞</strong></p>
+<p><strong>美国网件netgear 多款（影响45种型号 影响pwn2own 2021破解大赛路由器）最新nighthawk系列路由器、扩展器等网络设备0day pre-auth(无需认证) RCE远程代码执行漏洞</strong></p>
 <p><strong>厂商背景简介</strong></p>
 <p>全球领先的企业网络解决方案，及数字家庭网络应用倡导者<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BE%8E%E5%9B%BD%E7%BD%91%E4%BB%B6%E5%85%AC%E5%8F%B8/844142">美国网件公司</a>-NETGEAR Inc. （Nasdaq 股票代码：NTGR）成立于1996年1月，一直致力于网络技术创新，专注于产品的可靠性和易用性提升，为全球商用企业用户和家庭个人用户提供使用简便的高质量网络解决方案。美国网件总部设在美国加州<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9C%A3%E4%BD%95%E5%A1%9E/5634896">圣何塞</a>（San Jose，CA），已经在全球 25 个国家设立分支机构，产品通过 37000 家经销商在全球28000 个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%9B%B6%E5%94%AE%E7%BB%88%E7%AB%AF">零售终端</a>进行销售。对于个人消费者，美国网件提供了高性能，高可靠性与易用的家庭网络，家庭存储、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E5%AD%97%E5%AA%92%E4%BD%93">数字媒体</a>以及其他产品使消费者能够轻松接入到互联网。对于企业用户而言，美国网件为他们的 IT 基础架构提供强大的数据存储、安全、交换、无线解决方案，且无需花费巨大成本。同时，美国网件也在为全球顶级<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%90%E8%90%A5%E5%95%86">运营商</a>提供网络产品，帮助运营商为他们的用户构建数字家庭。</p>
 <p><strong>同时也是世界著名黑客破解大赛 zdi pwn2own AUSTIN  IOT 2021年的破解路由器型号厂商之一，此次纰漏漏洞也影响pwn2own 2021破解大赛netgear路由器型号。</strong></p>
@@ -199,8 +200,13 @@
 <p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/5.png"></p>
 <p><strong>美国网件发布并更新安全公告及影响版本多个型号路由设备</strong>(<a target="_blank" rel="noopener" href="https://kb.netgear.com/000064361/Security-Advisory-for-Pre-Authentication-Buffer-Overflow-on-Multiple-Products-PSV-2021-0168)%EF%BC%9A">https://kb.netgear.com/000064361/Security-Advisory-for-Pre-Authentication-Buffer-Overflow-on-Multiple-Products-PSV-2021-0168)：</a></p>
 <p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/4.png"></p>
+<p><strong>受影响路由器型号45种，netgear目前旗下网络设备种类81种，占比56%左右，据统计全网在线的路由器数量。zoomeye调查显示为，在线为990万。</strong></p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/6.png"></p>
+<p>shadon测绘搜索结果为在线设备为193万。</p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/zdi%E6%BC%8F%E6%B4%9E%E6%8F%90%E4%BA%A4/7.png"></p>
+<p><strong>漏洞影响范围应在百万数量级左右，可能会更多，有些没有被搜索到。</strong></p>
 <p><strong>漏洞细节：</strong></p>
-<p>路由器内部upnp服务存在漏洞，当恶意的攻击者构造特定的网络协议，即可触发漏洞、达到执行代码，获取root shell权限。</p>
+<p>路由器内部upnp服务存在问题漏洞，默认监听特定的端口进行处理，当攻击者构造精心制作的数据时即可触发漏洞，达到执行代码，获取root shell权限。</p>
 <p><strong>修复建议：</strong></p>
 <p>查看官方的受影响的型号范围，受影响的设备更新到官方最新固件。</p>
 
@@ -319,7 +325,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-10 18:40:54" itemprop="dateModified" datetime="2021-11-10T18:40:54+08:00">2021-11-10</time>
+                <time title="修改时间：2021-11-12 20:52:20" itemprop="dateModified" datetime="2021-11-12T20:52:20+08:00">2021-11-12</time>
               </span>
 
           
@@ -333,18 +339,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>分析过程记录</strong></p>
-<p>这是一个MFC的GUI应用程序，从现在的分析看来，从程序上入手呢，是支持命令行输入的，所以通过之前对MFC的程序的了解，分析了单文本边框的MFC程序，从ida逆向分析，去找接受命令行cmdline的地方代码和位置，通过分析比对两个比较相似的地方，然后用x64dbg去调试了一下，在静态函数的位置上进行断点，发现在这个位置上却没有断下来，可能就是接收命令行参数的地方不是这块函数，目前没有找到比较像的函数或者位置。</p>
-<p>熟悉一下x64汇编的调用约定</p>
-<p>x86应用程序的函数调用有stdcall、_cdecl、Fastcall等方式，但x64应用程序只有1种寄存器快速调用约定。前4个参数使用寄存器传递，如果参数超过4个，多余的参数就放在栈里，人栈顺序为从右到左，由函数调用方平衡栈空间。前4个参数存放的寄存器是固定的，分别是第1个参数RCX、第2个参数RDX、第3个参数R8、第4个参数R9，其他参数从右往左依次人栈。任何大于8字节或者不是1字节、2字节、4字节、8字节的参数必须由引用来传递（地址传递)。所有浮点参数的传递都是使用XMM 寄存器完成的，它们在XMMO、XMM1、XMM2和XMM3 中传递，返回值保存在rax寄存器中。</p>
-<p><strong>c++代码逆向一些细节</strong></p>
-<p>代码段寄存器CS：存放当前正在运行的程序代码所在段的段基值，表示当前用的指令代码可以从该段寄存器指定的存储器段中取得，相应的偏移值则由IP提供。<br>数据段寄存器DS：指出当前程序用的数据所存放段的最低地址，即存放数据段的段基值。<br>堆栈段寄存器SS：指出当前堆栈的底部地址，即存放堆栈段的段基值。</p>
-<p>get_narrow_winmain_command_line(),函数返回值存在rax寄存器中，获取当前命令行参数的参数，根据调试得出是正确的，可以通过在ida上设置一样的base基地址去，去同步x64dbg的地址。可以通过readfile下断点然后去查看调用堆栈，分析调用过程，分析代码，于是思考简单通用的方法是否可行，用autoit自动化脚本。</p>
-<p>使用autoit这个脚本，可以做到对指定的程序的窗口进行获取，并关闭，现在看一条思路。</p>
-<p>这个程序会打开可读的文件、然后使用一个窗口显示出来，<strong>需要做的就是2件事情</strong></p>
-<p>1、分析出显示出图像文本这个函数逻辑是从哪进行开始的，MFC这一块,可以从界面上先打开软件，然后在里面打开文件选项中选取文件，使用processmonitor程序进行监控，查看调用堆栈的过程。</p>
-<p>2、就是分析显示图像的窗口，能否想办法让它自己结束或者用autoit这个脚本自动来实现，通过查看句柄的工具可以找到分析显示出pdf的窗口，这个窗口就是来显示pdf文件的。</p>
-
+          The article has been encrypted, please enter your password to view.<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/26/fuzz-%E5%88%86%E6%9E%90%E6%9F%90%E8%BD%AF%E4%BB%B6%E6%97%B6%E8%AE%B0%E5%BD%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -463,7 +466,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-10 18:03:52" itemprop="dateModified" datetime="2021-11-10T18:03:52+08:00">2021-11-10</time>
+                <time title="修改时间：2021-11-12 20:51:45" itemprop="dateModified" datetime="2021-11-12T20:51:45+08:00">2021-11-12</time>
               </span>
 
           
@@ -477,79 +480,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>mfc应用程序的复习</strong></p>
-<p>之前学校的时候一直比较熟悉mfc的应用程序，现在毕业好久了5年多了，自从毕业之后一直在做Linux相关的工作，都把windows上的知识有些忘了，最近要进行fuzz windows上的东西，特此回顾一些知识，然后把复习的东西进行记录下来，防止以后要忘了，以后还是要多些博客记录啊。</p>
-<p>mfc 是入口的主程序是wWinMain()主函数，在这个主函数中会进行 <u><strong>初始化全局字符串、注册窗口和应用程序初始化、主的消息循环操作</strong></u> ，会进行**MyRegisterClass(hInstance)**注册主窗口，然后呢MFC都是靠msg消息的机制进行传递的，<u><strong>所有的操作都是创建一个主窗口</strong></u>，然后主窗口都是注册一个回调消息，这个回调消息是自己实现的。</p>
-<p>当用户点击各项的动作的时候，窗口的回调消息中进行判断进行，相关的动作。</p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc_main.png" alt="mfc_main"></p>
-<p>例如当用户点击这个窗口的退出时，应该返回到回调的消息中，回调消息中进行捕捉到消息，<u><strong>进行判断是退出的消息，进行销毁窗口，或者是当点击其他窗口例如关于，这时候做一个函数的动作，自己画一个窗口或者是其他的动作等，不一定是窗口的动作，也可以是win32的一些动作。</strong></u></p>
-<p><del>现在记忆有点混乱了，记得当初写图形应用程序时，有一个直接拖控件的直接点击就可以生成关联代码，然后可以直接用，**<u>MFC好像自己手动的去进行关联这块</u>**，好像是C#这个语言是自动的，这块之后在分析</del></p>
-<p>昨天在vs2019上的编辑器上，因为MFC的组件没有安装全，所以只能是启动图形化的项目，新装了软件库所有的之后，会有MFC的单独的项目出来，<u><strong>MFC还分为单文档，多文档和基于对话框模式的3种样式，不同的样式可能也会不同，主要的一点是区分好这三种的入口点函数是什么都是一样的么，去分析。</strong></u></p>
-<p>大概的MFC 程序 处理文件的思路也就是先这样，函数在最开始进行初始化各种组件控件，画图的各种初始化操作，然后在图形界面中存在按钮中读取文件的地址的信息，然后进行文件处理的操作，最后呢处理出来的结果和数据呢显示在界面上，重要想起来了，之前写的MFC的应用程序就是这种，一个单独的程序去处理文件和逻辑这块需要去分析，然后得出FUzz的函数和具体的偏移地址。</p>
-<p><u><strong>如果程序支持命令行方式启动的话，这块需要在仔细思考一下具体是怎么做的，MFC支持命令行的这块的操作。</strong></u></p>
-<p>MFC的主函数中有一个消息循环的机制，各种消息的捕获处理和分发，在主程序中进行调用。</p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc_loop_message.png"></p>
-<p><strong>mfc 基础一些字典知识：</strong></p>
-<p>程序入口 winMain</p>
-<p>2    具体6个步骤</p>
-<p>2.1     1、设计窗口 WNDCLASS wc </p>
-<p>2.2     2、注册窗口 RegisterClass</p>
-<p>2.3     3、创建窗口 createWindow</p>
-<p>2.4     4、显示和更新 showWindow updateWindow</p>
-<p>2.5     5、通过循环取消息 MSG msg </p>
-<p>2.5.1   写循环 while（1）</p>
-<p>2.5.2   GetMessage == false 退出循环</p>
-<p>2.5.3   翻译消息</p>
-<p>2.5.4   分发消息</p>
-<p>2.6     6、窗口过程</p>
-<p>2.6.1   <em>LRESULT</em> <em>CALLBACK</em> WindowProc</p>
-<p>2.6.2   返回默认处理</p>
-<p>2.6.3   return <em>DefWindowProc</em>(hwnd, uMsg, wParam, lParam);</p>
-<p>2.6.4   点击叉子 WM_CLOSE destroy</p>
-<p>2.6.5   WM_DESTROY postQuitMessage（0）</p>
-<p>2.6.6   鼠标左键按下</p>
-<p>2.6.7   键盘按下</p>
-<p>2.6.8   绘图 文字</p>
-<p>3      利用mfc创建窗口</p>
-<p>3.1     mfc头文件 afxwin.h</p>
-<p>3.2     自定义类 继承与 CWinApp 应用程序类 MyApp app 应用程序对象 ，有且仅有一个</p>
-<p>3.3     程序如果 InitInstance</p>
-<p>3.4     入口函数里 创建窗口</p>
-<p>3.5     窗口类 MyFrame 继承与 CFrameWnd </p>
-<p>3.6     MyFrame 构造中 Create（NULL，标题名称）</p>
-<p>3.7     创建窗口对象 </p>
-<p>3.8     显示和更新</p>
-<p>3.9      m_pMainWnd = frame; //保存指向应用程序的主窗口的指针</p>
-<p>3.10    return TRUE</p>
-<p>3.11    对项目进行配置 在共享DLL中使用MFC</p>
-<p>4      消息映射机制</p>
-<p>4.1     声明宏 写到.h中</p>
-<p>4.2     分界宏 写到.cpp中</p>
-<p>4.3     找消息宏 写到 分界宏 中间</p>
-<p>4.4     把函数原型 声明写到.h中</p>
-<p>4.5     函数的实现写到.cpp中</p>
-<p>4.6     鼠标、键盘、绘图</p>
-<p><strong>MFC的演变进化过程分为3种</strong></p>
-<p>1、<strong>从win32程序的底层</strong>（全部自己写、消息循环、注册回调处理消息）-&gt; <strong>mfc应用</strong>(利用mfc框架，隐去消息循环等底层处理，而是已c++类的方式提供框架 cwinapp、主的程序  cframe 主的框架、入口点wmain函数 -&gt; inintstance 函数) -&gt; <strong>mfc 向导</strong>(又隐去一些细节、框架变得更多等)</p>
-<p>2、在dialog mfc编程中，每个视图dialog资源对应绑定一个类，每个控件绑定一个类对象里的成员。</p>
-<p><strong>MFC图形gui fuzz</strong></p>
-<p>1、自己去写一个MFC读取文件并显示在控件上的GUI程序去逆向和fuzz一下。</p>
-<p>mfc gui的应用程序逻辑.</p>
-<p>1、在初始化窗口函数OnInitDialog()</p>
-<p><code>this-&gt;parse_file()</code></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/mfc_parse_file.png"></p>
-<p>进行处理，并把文本显示在控件上。</p>
-<p><strong>mfc_gui测试读文件时的堆栈图片：</strong></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/mfcdialog_stack.png"></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/mfcdialog_1_stack.png"></p>
-<p><strong>VisView_ng.exe在读取PDF文件时的堆栈图</strong></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/VisView_1.png"></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/VisView_2.png"></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/VisView_3.png"></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/VisView_4.png"></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/VisView_5.png"></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/VisView_6.png"></p>
-
+          The article has been encrypted, please enter your password to view.<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/19/mfc%E7%A8%8B%E5%BA%8F%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -599,7 +538,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-02 19:04:37" itemprop="dateModified" datetime="2021-11-02T19:04:37+08:00">2021-11-02</time>
+                <time title="修改时间：2021-11-12 20:50:40" itemprop="dateModified" datetime="2021-11-12T20:50:40+08:00">2021-11-12</time>
               </span>
 
           
@@ -613,45 +552,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>目前来看winafl的fuzz实际上是分为2种。</strong></p>
-<p>1、一种是找到合适的偏移的函数的位置进行fuzz.</p>
-<p>2、一种是找到对应的软件的dll然后去分析，写harness的去进行fuzz程序。</p>
-<p>还有一个比较关键的点：</p>
-<p>就是确认这个函数调用的一个顺序，基于堆栈的函数调用顺序</p>
-<p>一个方法呢 使用 DynamoRIO 的 drcov的覆盖率工具扫一下，看都是哪些被调用了，看覆盖率和用了哪些函数，</p>
-<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\drrun.exe -t drcov -- hh.exe -decompile  ./in/admin.chm</code> </p>
-<p>类似这种，会执行函数然后呢，会被这个函数调用的过程进行一个程序的插桩记录，所以可以得出这个过程。</p>
-<p>但是呢看不到一个调用的堆栈，看一下。</p>
-<p>还有一种呢就是通过x64dbg，先是断点到处理到那个dll的那个位置，然后好像动态的去找到一个调用顺序链，这个应该是可以，之后再看。</p>
-<p>看文章有些通过windbg编写脚本自动化去分析到目的函数createfile,readfile的执行流</p>
-<p>思路是 在dbg加载文件时，读取整个文件的信息，在createfile系统调用进行断点。</p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/4.png"></p>
-<p>使用kp打印函数堆栈信息。</p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/5.png"></p>
-<p>，去编写，现在没有x64dbg的脚本资料分析，执行流，也要自己找或编写。</p>
-<p>其他文章也有，分析函数调用的相关的函数（类似一个函数中调用FreeImg*函数，按照顺序打印出来）</p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/6.png"></p>
-<p>用processmonitor可以看出函数的调用栈，看到是从线程中，没有主进程main函数的调用关系，与windbg的脚本显示的一样。</p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/7.png"></p>
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/8.png"></p>
-<p><strong>winafl选择函数的要满足这三点要求</strong></p>
-<p>1、winafl为了保证效率和速度呢，会保存当前函数的堆栈信息，当这个函数结束的时候呢，在恢复出而不结束程序，所以呢，需要选择合。</p>
-<p>2、这个函数的选择呢，需要支持会在当前的函数中进行文件的处理文件解析的操作。</p>
-<p>3、这个函数在结束之后需要去关闭对这个文件的句柄，不然的话，就没有办法对当前的文件进行变异处理。</p>
-<p><strong>一些命令行的总结</strong></p>
-<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\32\drrun.exe -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x0100 -fuzz_itera tions 10 -nargs 2 -- test_gdiplus.exe ./1.bmp</code></p>
-<p><strong>64位的程序</strong></p>
-<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64\drrun.exe -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x10e0 -fuzz_iterations 10 -nargs 2 -- test_gdiplus.exe ./1.bmp</code></p>
-<p><code>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 -- -coverage_module gdiplus.dll -coverage_module WindowsCodecs.dll -fuzz_iterations 5000 -target_module test_gdiplus.exe -target_offset 0x10e0 -nargs 2 -- test_gdiplus.exe @@</code></p>
-<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\drrun.exe -t drcov -- hh.exe -decompile  ./in/admin.chm</code> </p>
-<p><code>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 -- -coverage_module hhctrl.ocx  -fuzz_iterations 5000 -target_module vs_test_x64.exe -target_offset 0x11830 -nargs 2 -- vs_test_x64.exe @@</code></p>
-<p><strong>遇到问题：</strong></p>
-<p><u><strong>1、vs_test_x64每次启动的话,多次请求的fuzz一个函数，没有关闭句柄，想着调试，或者看一下是哪些程序占用了这个文件。</strong></u></p>
-<p>动态执行一下，加插桩，测试一下，覆盖率，看，winafl.dll的作用是进行堆栈保存和恢复这一块，看当前启动起来跑程序是否有问题，算是fuzz之前的一次准备，这次跑没问题，意味之后的fuzz将会变得顺利</p>
-<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64\drrun.exe -c winafl.dll -debug -target_module  hh.exe -target_offset 0x150c -fuzz_iterations 10 -nargs 4 -- hh.exe -decompile in H:\winafl_work\winafl\winafl-master\build64\bin\Release\in\22.chm</code></p>
-<p>AFL fuzz的命令行程序，需要计算覆盖率的模块是啥，AFL好用来拿这个覆盖率做算法变异，主模块是啥和 target_offset这个偏移量有关系，对应起来的，主模块的偏移量。</p>
-<p><code>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 -- -coverage_module hhctrl.ocx  -fuzz_iterations 5000 -target_module hh.exe -target_offset 0x150c -nargs 4 -- hh.exe -decompile in @@</code></p>
-
+          The article has been encrypted, please enter your password to view.<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/19/winafl-fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
