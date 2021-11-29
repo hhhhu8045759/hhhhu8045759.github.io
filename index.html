@@ -148,6 +148,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/29/winafl%E4%B8%AA%E4%BA%BA%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Her0back">
+      <meta itemprop="description" content="记录学习日志，和随便写写">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Her0back blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/29/winafl%E4%B8%AA%E4%BA%BA%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">winafl个人经验总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-29 14:23:37 / 修改时间：14:24:40" itemprop="dateCreated datePublished" datetime="2021-11-29T14:23:37+08:00">2021-11-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>学习、实践、总结、复盘**</p>
+<p><strong>目前来看winafl的fuzz实际上是分为2种。</strong></p>
+<p>1、一种是找到合适的偏移的函数的位置进行fuzz.</p>
+<p>2、一种是找到对应的软件的dll然后去分析，写harness的去进行fuzz程序。</p>
+<p>还有一个比较关键的点：</p>
+<p>就是确认这个函数调用的一个顺序，基于堆栈的函数调用顺序</p>
+<p>一个方法呢 使用 DynamoRIO 的 drcov的覆盖率工具扫一下，看都是哪些被调用了，看覆盖率和用了哪些函数，</p>
+<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\drrun.exe -t drcov -- hh.exe -decompile  ./in/admin.chm</code> </p>
+<p>类似这种，会执行函数然后呢，会被这个函数调用的过程进行一个程序的插桩记录，所以可以得出这个过程。</p>
+<p>但是呢看不到一个调用的堆栈，看一下。</p>
+<p>还有一种呢就是通过x64dbg，先是断点到处理到那个dll的那个位置，然后好像动态的去找到一个调用顺序链，这个应该是可以，之后再看。</p>
+<p>看文章有些通过windbg编写脚本自动化去分析到目的函数createfile,readfile的执行流</p>
+<p>思路是 在dbg加载文件时，读取整个文件的信息，在createfile系统调用进行断点。</p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/4.png"></p>
+<p>使用kp打印函数堆栈信息。</p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/5.png"></p>
+<p>，去编写，现在没有x64dbg的脚本资料分析，执行流，也要自己找或编写。</p>
+<p>其他文章也有，分析函数调用的相关的函数（类似一个函数中调用FreeImg*函数，按照顺序打印出来）</p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/6.png"></p>
+<p>用processmonitor可以看出函数的调用栈，看到是从线程中，没有主进程main函数的调用关系，与windbg的脚本显示的一样。</p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/7.png"></p>
+<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/winafl%20fuzz%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/8.png"></p>
+<p><strong>winafl选择函数的要满足这三点要求</strong></p>
+<p>1、winafl为了保证效率和速度呢，会保存当前函数的堆栈信息，当这个函数结束的时候呢，在恢复出而不结束程序，所以呢，需要选择合。</p>
+<p>2、这个函数的选择呢，需要支持会在当前的函数中进行文件的处理文件解析的操作。</p>
+<p>3、这个函数在结束之后需要去关闭对这个文件的句柄，不然的话，就没有办法对当前的文件进行变异处理。</p>
+<p>一些大型的图形化程序，分析得出结论 整体化fuzz可能性比较小（图形化fuzz需要一个函数的闭环，而依赖图形框架的GUI程序本身的函数不算是个闭环），所以一般都比较小，既然这样的概率比较小，而ZDI上也有爆出漏洞证明一般都是通过fuzz dll写harness进行漏洞挖掘的。</p>
+<p>目前fuzz view_ng.exe这个程序，找到pdf.dll解析pdf的dll,它上层有load_dll这个函数，load_dll的功能是用来加载dll,pdf.dll用来解析，对外接口不变，对内解析变化也好修改，对外暴露接口，cfile::get等接口。</p>
+<p>目前我想到2种方式去进行fuzz</p>
+<p><strong>1、一种是在封装好的接口处fuzz、好处 内部调用逻辑不用管，就可以、坏处：c++ 类虚函数 重写 导出这块我还没看，没验证。</strong></p>
+<p><strong>2、在中间调用解析pdf那层最fuzz,看调用关系，在执行过程种调用的优先顺序是啥，自己写代码，按照哪个去加载库区解析，需要看雪有一篇文章，windbg脚本这块，试试</strong>。</p>
+<p><strong>一些命令行的总结</strong></p>
+<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\32\drrun.exe -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x0100 -fuzz_itera tions 10 -nargs 2 -- test_gdiplus.exe ./1.bmp</code></p>
+<p><strong>执行种子裁剪</strong></p>
+<p><code>H:\winafl_work\winafl\winafl-master\winafl-cmin.py -i H:\winafl_work\winafl\winafl-master\build32\bin\Release\vedio_sample -o H:\winafl_work\winafl\winafl-master\build32\bin\Release\vedio_sample_out -t 1000000 -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\ -coverage_module MediaInfo.dll -target_module xunlei_mediadll_test.exe  -target_offset 0x16710  -nargs 2 -- C:\Users\Administrator\Desktop\xunlei_fuzz\media_fuzz\xunlei_mediadll_test.exe @@</code></p>
+<p><strong>会报一个drun run failed -2 这个错误加上 –skip-dry-run就可以 具体原因还没看</strong></p>
+<p> <code>python H:\winafl_work\winafl\winafl-master\winafl-cmin.py --skip-dry-run -i H:\winafl_work\winafl\winafl-master\build32\bin\Release\vedio_sample -o H:\winafl_work\winafl\winafl-master\build32\bin\Release\vedio_sample_out -t 1000000 -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\ -coverage_module MediaInfo.dll -target_module xunlei_mediadll_test.exe  -target_offset 0x16710  -nargs 2 -- C:\Users\Administrator\Desktop\xunlei_fuzz\media_fuzz\xunlei_mediadll_test.exe @@</code></p>
+<p><strong>64位的程序</strong></p>
+<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64\drrun.exe -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x10e0 -fuzz_iterations 10 -nargs 2 -- test_gdiplus.exe ./1.bmp</code></p>
+<p><code>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 -- -coverage_module gdiplus.dll -coverage_module WindowsCodecs.dll -fuzz_iterations 5000 -target_module test_gdiplus.exe -target_offset 0x10e0 -nargs 2 -- test_gdiplus.exe @@</code></p>
+<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin32\drrun.exe -t drcov -- hh.exe -decompile  ./in/admin.chm</code> </p>
+<p><code>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 -- -coverage_module hhctrl.ocx  -fuzz_iterations 5000 -target_module vs_test_x64.exe -target_offset 0x11830 -nargs 2 -- vs_test_x64.exe @@</code></p>
+<p><strong>遇到问题：</strong></p>
+<p><u><strong>1、vs_test_x64每次启动的话,多次请求的fuzz一个函数，没有关闭句柄，想着调试，或者看一下是哪些程序占用了这个文件。</strong></u></p>
+<p>动态执行一下，加插桩，测试一下，覆盖率，看，winafl.dll的作用是进行堆栈保存和恢复这一块，看当前启动起来跑程序是否有问题，算是fuzz之前的一次准备，这次跑没问题，意味之后的fuzz将会变得顺利</p>
+<p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64\drrun.exe -c winafl.dll -debug -target_module  hh.exe -target_offset 0x150c -fuzz_iterations 10 -nargs 4 -- hh.exe -decompile in H:\winafl_work\winafl\winafl-master\build64\bin\Release\in\22.chm</code></p>
+<p>AFL fuzz的命令行程序，需要计算覆盖率的模块是啥，AFL好用来拿这个覆盖率做算法变异，主模块是啥和 target_offset这个偏移量有关系，对应起来的，主模块的偏移量。</p>
+<p><code>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 -- -coverage_module hhctrl.ocx  -fuzz_iterations 5000 -target_module hh.exe -target_offset 0x150c -nargs 4 -- hh.exe -decompile in @@</code></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/25/fuzz-xx%E8%BD%AF%E4%BB%B6%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -758,7 +864,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-29 11:47:00" itemprop="dateModified" datetime="2021-11-29T11:47:00+08:00">2021-11-29</time>
+                <time title="修改时间：2021-11-29 14:24:48" itemprop="dateModified" datetime="2021-11-29T14:24:48+08:00">2021-11-29</time>
               </span>
 
           
@@ -821,158 +927,6 @@
 <p><code>H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64\drrun.exe -c winafl.dll -debug -target_module  hh.exe -target_offset 0x150c -fuzz_iterations 10 -nargs 4 -- hh.exe -decompile in H:\winafl_work\winafl\winafl-master\build64\bin\Release\in\22.chm</code></p>
 <p>AFL fuzz的命令行程序，需要计算覆盖率的模块是啥，AFL好用来拿这个覆盖率做算法变异，主模块是啥和 target_offset这个偏移量有关系，对应起来的，主模块的偏移量。</p>
 <p><code>afl-fuzz.exe -i in -o out -D H:\winafl_work\DynamoRio\DynamoRIO-Windows-8.0.18887\bin64 -t 20000 -- -coverage_module hhctrl.ocx  -fuzz_iterations 5000 -target_module hh.exe -target_offset 0x150c -nargs 4 -- hh.exe -decompile in @@</code></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/28/Linux%20sudo%E6%BC%8F%E6%B4%9E(CVE-2017-1000367)%E5%A4%8D%E7%8E%B0%E5%92%8C%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Her0back">
-      <meta itemprop="description" content="记录学习日志，和随便写写">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Her0back blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/28/Linux%20sudo%E6%BC%8F%E6%B4%9E(CVE-2017-1000367)%E5%A4%8D%E7%8E%B0%E5%92%8C%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-28 15:36:05" itemprop="dateCreated datePublished" datetime="2021-09-28T15:36:05+08:00">2021-09-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-21 11:05:32" itemprop="dateModified" datetime="2021-10-21T11:05:32+08:00">2021-10-21</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>title:  Linux sudo漏洞（CVE-2017-1000367）复现和利用思路分析</p>
-<p>date:  2021-09-28 15:36:05</p>
-<p>tags: 17年做漏洞分析的文章，整理一下到博客上</p>
-<h2 id="漏洞背景"><a href="#漏洞背景" class="headerlink" title="漏洞背景"></a><strong>漏洞背景</strong></h2><p>在今年5.30日linux sudo被爆出存在安全漏洞，sudo版本是1.8.20以及之前的版本都有可能会受到漏洞的影响，在开启selinux的情况和普通用户在sudoer者中，可以使普通用户造成覆盖任意文件，造成权限的提升。<br><br></p>
-<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>出现漏洞主要在sudo中的/src/ttyname.c中的</p>
-<p>char *get_proccess_ttyname()函数中，这个函数功能获取终端名称，会有多种方式获取终端名称，而此次漏洞是出现在根据读取/proc/pid/stat的方式先获取设备号，然后根据设备号获取设备名的函数中，如图所示：</p>
-<p><img src="https://image.3001.net/images/20170610/14970798186750.png!small" alt="图片1.png"></p>
-<p>从网上下了一个漏洞版本的1.8.18版本sudo源码，分析char *get_proccess_ttyname()函数的整体的执行流程。</p>
-<p><img src="https://image.3001.net/images/20170610/14970798312776.png!small" alt="图片2.png"></p>
-<br>
-<br>
-然后看一下读取/proc/pid/stat处的代码：
-
-<p><img src="https://image.3001.net/images/20170610/14970798416794.png!small" alt="图片3.png"></p>
-<p>可以看出是按照空格来区分来读取信息，也就是读取第7个空格之前的信息，也就是第7段的信息，百度了以下发现第7段的信息如果是非0的话就是代表设备号。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /proc/6873/stat</span><br><span class="line">6873 (a.out) R 6723 6873 6723 34819 6873 8388608 77 0 0 0 41958 31 0 0 25 0 3 0 5882654 1409024 56</span><br></pre></td></tr></table></figure>
-
-<p>这里面的第7项也就是34819就是当前终端的设备号，第2项a.out就是进程名字。</p>
-<p>这里在回顾一下源代码中获取设备号的逻辑是判断有7个空格取空格前一项也就是第7项数据，第二项是进程的名字，漏洞就出现在这里，进程名字是我们可以可控的，那么如果进程名字里面出现空格的话，还能获取到正确的设备名么，当然就是不能，那么进程名是可变的，我们就可以通过构造带有空格的进程名字来伪装设备号，例如进程名字。 “34873“那么我们获取到的设备号就是34873。</p>
-<p>那么根据上面的代码的分析流程可以看出，34873的设备号就是不存在的，那么如果我们创建一个软连接为</p>
-<p>“34873 ”链接到/usr/bin/sudo下，当我执行这个软连接时，就会调用到sudo本身的get_proccess_ttyname</p>
-<p>函数中，因为这个时候在/proc/pid/stat 的进程名字是“34873 ”所以获取到的设备号就是34873这个我们自己伪造的设备号，但是这时大家都在想了，我们伪造了一个假的设备号有什么用么？因为get_proccess_ttyname的获取是如果找不到这个设备号对应的设备名称那么就是返回空，那么如果后续的官方的伪装成任意文件的设备终端就不了了之了，那么我们应该根据这个可以伪装任意设备号的漏洞来一步一步的把当前的设备名字伪装成任意文件呢？</p>
-<p>这里我们在看以下查找设备名字的流程，根据设备号先在几个指定的目录下去遍历例如 /dev/pts /dev/pt等目录进行遍历用stat函数获取设备号，看是否相同，下图所示</p>
-<p><img src="https://image.3001.net/images/20170610/14970798526965.png!small" alt="图片4.png"></p>
-<p>因为这个设备号对应的设备名字是不存在的所以在这几个指定的目录下是找不到的，那么如果找不到的话，函数就是会从/dev下遍历所有目录，除了几个设置忽略的目录：</p>
-<p><img src="https://image.3001.net/images/20170610/14970798626985.png!small" alt="图片5.png"></p>
-<p>忽略的目录</p>
-<p><img src="https://image.3001.net/images/20170610/14970798712459.png!small" alt="图片6.png"></p>
-<p>就是除了这几个目录，最后一次会遍历所有的文件去查找设备名，这个时候漏洞的另外一个关键的点出来了，可以看/dev目录下有两个特殊目录，一个是/dev/shm,一个是/dev/mqueue,因为有的系统没有/dev/mqueue,所以我就看一下/dev/shm的这个文件夹：</p>
-<p><img src="https://image.3001.net/images/20170610/14970798809935.png!small" alt="图片7.png"></p>
-<p>可以看出这个文件夹普通用户是有写权限的，就是说明普通用户可以随便改里面的内容，那么我们是不是就可以当遍历到/dev/shnm/目录下的时候，我们创建一个软连接例如/dev/shnm/_tty的一个软连接，使这个软连接指向一个设备号为我们伪造的34873的设备号，那么我们是不是就是可以获取到设备名称了，它就是软连接的名称/dev/shnm/_tty，因为这个软连接我们是可以控制的，我们可以把这个软连接在get_proccess_ttyname函数返回后，我们可以把这个软连接重新链接到任意的文件，例如一些私密的文件/etc/passwd等。</p>
-<p>这个时候我们已经获取了一个假的软连接，这个软连接可以指向任何文件位置，那么我们如何使造成往文件中写内容呢，这里看以下官网的漏洞分析：</p>
-<p><img src="https://image.3001.net/images/20170610/14970798887571.png!small" alt="图片8.png"></p>
-<p>大概意思就是，在一个selinux开启的系统上，sudo进程会通过这个relabel_tty()这个函数以O_RDWR读写方式打开复制一份的sudo终端设备文件，并把输入流，输出流，错误流写入到设备终端文件中去。</p>
-<p><img src="https://image.3001.net/images/20170610/14970798991856.png!small" alt="图片9.png"></p>
-<p>这块没太分析，通过设置某个参数，并且在selinux开启的时候，就会把stdin等输入到虚拟终端的设备文件中，因为虚拟终端的设备文件，普通用户是写不了的，这个函数既然可以往/dev/pts/文件中写内容，那么同理一下可以往我们软连接重定向的/etc/passwd里面写入内容，这样就可以完成造成任意文件的内容覆盖，造成权限的提升。<br><br></p>
-<h2 id="漏洞触发的关键几点"><a href="#漏洞触发的关键几点" class="headerlink" title="漏洞触发的关键几点"></a>漏洞触发的关键几点</h2><p>1：可以伪造任意不存在的设备号</p>
-<p>2：在伪造任意的设备号后，在遍历查找设备名的时候，/dev/shnm 是个用户可控的目录因为有写权限，可以这时候创建一个软连接并且指向一个设备文件，这个设备文件的设备号就是我们伪造的那个。</p>
-<p>3：在之后替换我们的软连接的指向位置，在selinux开启的时候sudo构造”-r”, “unconfined_r”等参数</p>
-<p>就会把输入，输出写到我们伪装的敏感文件中去，达到提权。<br><br></p>
-<h2 id="官方分析漏洞分析解释和自己的疑问解答"><a href="#官方分析漏洞分析解释和自己的疑问解答" class="headerlink" title="官方分析漏洞分析解释和自己的疑问解答"></a>官方分析漏洞分析解释和自己的疑问解答</h2><p>第一步：在/dev/shnm/_tmp,先创建一个空的链接/dev/shm/_tmp__tty指向/dev/pts/57，它的设备号就是我们伪造的34873.</p>
-<p>Q:为什么最开始就创建一个空的链接指向，而不是直接创建一个/dev/pts/57的虚拟设备文件，为什么/dev/pts/57它的设备号就是34873</p>
-<p><img src="https://image.3001.net/images/20170610/14970799104076.png!small" alt="图片10.png"></p>
-<p>A:因为要是最开始就创建一个链接指向的话，因为get_proccess_ttyname函数会先遍历/dev/pts等几个目录，一开始创建的话就在/dev/pts下就会找到了，也就不能漏洞利用了，我在Linux下我试了一下/dev/pts/1的设备号是34817之后就是递增的关系，所以/dev/pts/57是34873</p>
-<br>
-第二步：我们执行/dev/shm/\_tmp/     34873 指向sudo的软连接，这时候就会搜索设备号，没什么疑问。
-
-<br>
-第三步：设备标志，为了把输出能写到设备文件中去。
-
-<br>
-第四步：监控/dev/shm/\_tmp的open函数，为什么能走到这里，因为它在/dev/pts/下没有找到，我们没有创建/dev/pts/57
-
-<br>
-第五步：这个时候我们监控到open /dev/shm/\_tmp函数的消息，启动另外一个进程把这个阻塞住，然后不断的去获取/dev/pts/57虚拟终端就是poc的下列代码
-
-<p><img src="https://image.3001.net/images/20170610/14970799202830.png!small" alt="图片11.png"></p>
-<p>当获取完了之后，把sudo的进程放下，这个时候遍历到软连接的时候，这个软连接指向的/dev/pts/57就是存在的，设备号就是34873，就会找到返回终端名字 /dev/shm/_tmp/_tty 就成功伪造了一个可以指向任意文件的软连接了。poc代码中在阻塞之前还用了这样一段代码</p>
-<p><img src="https://image.3001.net/images/20170610/14970799274661.png!small" alt="图片12.png"></p>
-<p>为什么要这么做呢，就是因为害怕当我们触发open函数的时候当我们阻塞的时候这个时候sudo的函数都已经执行完了，因为是多核的调度，那这时候我们的虚拟终端还没有创建，那么这就是不会成功利用了，为了让它不能在得到在阻塞之前就执行完了，用到了setpriority这个函数，这个函数的作用是使这两个进程都用一个CPU进行执行，并且执行sudo的那个进程的优先级是低的19，阻塞的那个进程是-20优先级是高的，而且竞争一个cpu执行，所以所以很大几率上可以阻塞住的，这就是官网分析上所提到的2次的竞争才利用成功，其实poc有时候是利用失败的，就是说没竞争过，在阻塞的时候，sudo的都已经查找到那个软连接了，结果那个软连接还是空的，所以就是失败了。</p>
-<p>第六步：同理在要关闭的时候，这个时候把软连接换成我们想要覆盖的文件，可以达到覆盖目的。</p>
-<br>
-## 利用思路图解
-<br>
-<br>
-![](https://raw.githubusercontent.com/hhhhu8045759/img/main/17%E5%B9%B4%E6%BC%8F%E6%B4%9ELinux%20sudo%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%9B%BE%E7%89%87/1.png)
-
-<br>
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><br>
-<br>
-1.把自己添加到sudoer者中，然后开启selinux保证开启，执行git上的漏洞poc，poc链接会在最后参考链接中，发现大部分可以成功，覆盖文件如图：
-
-<br>
-<br>
-![](https://raw.githubusercontent.com/hhhhu8045759/img/main/17%E5%B9%B4%E6%BC%8F%E6%B4%9ELinux%20sudo%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%9B%BE%E7%89%87/2.png)
-
-<br>
-
-<h2 id="官方补丁"><a href="#官方补丁" class="headerlink" title="官方补丁"></a>官方补丁</h2><br>
-1.修复了在空格处的判断
-
-<br>
-2.在忽略路径中添加了/dev/shnm和/dev/mqueue
-
-<br>
-
-<p><img src="https://raw.githubusercontent.com/hhhhu8045759/img/main/17%E5%B9%B4%E6%BC%8F%E6%B4%9ELinux%20sudo%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%9B%BE%E7%89%87/3.png" alt="3333.png"></p>
 
       
     </div>
@@ -1057,12 +1011,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
